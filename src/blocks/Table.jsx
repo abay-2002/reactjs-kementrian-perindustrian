@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Table() {
+
+    const navigate = useNavigate();
 
     // const [count, setCount] = useState(0);
     // const [currentTime, setCurrentTime] = useState(moment().format('h:mm:ss a'));
@@ -63,7 +66,6 @@ export default function Table() {
 
     return (
         <div className="relative overflow-x-auto">
-            <h1 className="hidden">Kementrian</h1>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -108,12 +110,18 @@ export default function Table() {
                             <td className="px-6 py-4">
                                 {item.updated_at}
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 flex flex-row gap-x-2">
                                 <button
                                     onClick={() => deleteHandler(item.id)}
                                     type="button"
-                                    className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    className="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                     Delete
+                                </button>
+                                <button
+                                    onClick={() => navigate(`/update/${item.id}`)}
+                                    type="button"
+                                    className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Update
                                 </button>
                             </td>
                         </tr>
