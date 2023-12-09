@@ -1,17 +1,25 @@
 import axios from "axios";
+import moment from "moment";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Create() {
+
+    const navigate = useNavigate();
 
     const [inputName, setInputName] = useState('');
     const [inputAuthor, setInputAuthor] = useState(''); 
 
+    
+
     // == Event Handler ==
     function postHandler() {       
+        let publish_date = moment().format('YYYY-MM-D');
+    
         let data = JSON.stringify({
-            "name": "Hello From React",
-            "author": "angkasa",
-            "publish_date": "2023-12-5"
+            "name": inputName,
+            "author": inputAuthor,
+            "publish_date": publish_date
         });
 
         let config = {
@@ -26,8 +34,7 @@ export default function Create() {
 
         axios.request(config)
             .then((response) => {
-                alert('Berhasil Menambah Data!')
-                console.log(response);
+                navigate('/');
             })
             .catch((error) => {
                 console.log(error);
