@@ -6,12 +6,12 @@ export default function Table() {
 
     // const [count, setCount] = useState(0);
     // const [currentTime, setCurrentTime] = useState(moment().format('h:mm:ss a'));
-    
+
     // const waktu = useState('6:03:00 pm');
     // const waktu2 = useState('6:05:00 pm');
 
     // useEffect(() => {
-        
+
     //     setTimeout(() => {
     //         setCount((count) => count + 1);
     //         setCurrentTime(moment().format('h:mm:ss a'));
@@ -21,26 +21,45 @@ export default function Table() {
     //         }
     //     }, 1000);
     // });
-    
+
     const [data, setData] = useState([]);
+    const [deleted, setDeleted] = useState();
 
     useEffect(() => {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
             url: 'http://127.0.0.1:8000/api/books',
-            headers: { }
+            headers: {}
         };
 
         axios.request(config)
             .then((response) => {
                 setData(response.data);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }, [deleted, data]);
+
+    function deleteHandler(id) {
+        setDeleted(id);
+
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://127.0.0.1:8000/api/books/${id}`,
+            headers: {}
+        };
+
+        axios.request(config)
+            .then(() => {
+                alert(`Id: ${id} berhasil dihapus`);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     return (
         <div className="relative overflow-x-auto">
@@ -63,11 +82,14 @@ export default function Table() {
                         <th scope="col" className="px-6 py-3">
                             Updated At
                         </th>
+                        <th scope="col" className="px-6 py-3">
+                            Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((item, index) => (
-                        <tr 
+                        <tr
                             key={index}
                             className="bg-white border-b"
                         >
@@ -85,6 +107,14 @@ export default function Table() {
                             </td>
                             <td className="px-6 py-4">
                                 {item.updated_at}
+                            </td>
+                            <td className="px-6 py-4">
+                                <button
+                                    onClick={() => deleteHandler(item.id)}
+                                    type="button"
+                                    className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))}
